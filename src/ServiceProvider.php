@@ -2,16 +2,15 @@
 
 namespace Fureev\Social;
 
-use Fureev\Socialite\Contracts\Factory;
 use Fureev\Socialite\SocialiteManager;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
+use Illuminate\Support\ServiceProvider as SP;
 
 /**
  * Class ServiceProvider
  *
  * @package Fureev\Social
  */
-class ServiceProvider extends RouteServiceProvider
+class ServiceProvider extends SP
 {
     /**
      * Bootstrap services.
@@ -39,7 +38,7 @@ class ServiceProvider extends RouteServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
 
-        $this->app->singleton(Factory::class, function ($app) {
+        $this->app->singleton('social', function ($app) {
             return (new SocialiteManager($app))->buildCustomProviders(array_keys($this->app['config']['social.drivers']));
 
         });
