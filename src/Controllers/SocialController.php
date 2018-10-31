@@ -32,11 +32,15 @@ class SocialController extends Controller
      */
     public function handleProviderCallback(string $service)
     {
+        /** @var $social \Fureev\Socialite\SocialiteManager */
+        $social = app('social');
+
         /** @var \Fureev\Socialite\Two\CustomProvider $driver */
-        $driver = Socialite::with($service);
+        $driver = $social->with($service);
+
         $user = $driver->user();
 
-        $exec = $driver->getDriverConfig('onSuccess');
+        $exec = $social->getConfig('onSuccess') ?? $driver->getDriverConfig('onSuccess');
 
         if ($exec) {
             if (is_array($exec)) {
