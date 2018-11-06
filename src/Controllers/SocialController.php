@@ -47,7 +47,7 @@ class SocialController extends Controller
                 return app()->make($exec[0])->{$exec[1]}($user, $driver);
             }
             if ($exec instanceof \Closure) {
-                return app()->make($exec)($user, $driver);
+                return $exec($user, $driver);
             }
         }
     }
