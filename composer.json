@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "efureev/socialite": "dev-master",
+    "efureev/socialite": "~0.3",
     "efureev/support": "~1.0",
     "illuminate/routing": "~5.6"
   },
