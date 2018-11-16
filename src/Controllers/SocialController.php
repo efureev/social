@@ -38,16 +38,14 @@ class SocialController extends Controller
         /** @var \Fureev\Socialite\Two\CustomProvider $driver */
         $driver = $social->with($service);
 
-        $user = $driver->user();
-
         $exec = $social->getConfig('onSuccess') ?? $driver->getDriverConfig('onSuccess');
 
         if ($exec) {
             if (is_array($exec)) {
-                return app()->make($exec[0])->{$exec[1]}($user, $driver);
+                return app()->make($exec[0])->{$exec[1]}($driver);
             }
             if ($exec instanceof \Closure) {
-                return $exec($user, $driver);
+                return $exec($driver);
             }
         }
     }
