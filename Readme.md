@@ -6,10 +6,8 @@
 Wrapper on Laravel Socialite
 
 ## Install
-#### Composer
-- `"efureev/social": "dev-master"`
-
-In file `AppServiceProvider.php` register `AuthenticatableModel` binding.
+- `composer require efureev/social`
+- In file `AppServiceProvider.php` register `AuthenticatableModel` binding.
 Value - your Auth Model:
 ```php
 public function register(): void
