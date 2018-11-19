@@ -19,6 +19,7 @@ public function register(): void
 ## Config
 
 ### Config Props 
+- `redirectOnAuth` [string] redirect on address after user auth.
 - `onSuccess` [\Closure|array] action on auth success. Params: \Fureev\Socialite\Two\AbstractProvider
 - `drivers` [array] Driver list (`driverName => driverConfig`)
 
