@@ -43,7 +43,9 @@ File `config/social.php`
 
 return [
     'onSuccess' => function ($driver) {
-        \App\Services\SocialAccountService::updateUser($driver);
+        $user = \Fureev\Social\Services\SocialAccountService::setOrGetUser($driver);
+
+        return \Fureev\Social\Services\SocialAccountService::auth($user);
     },
     //'onSuccess' => [\App\Http\Controllers\IndexController::class, 'index'],
     'drivers'   => [
