@@ -5,8 +5,18 @@
 ## Information
 Wrapper on Laravel Socialite
 
-## Composer
+## Install
+#### Composer
 - `"efureev/social": "dev-master"`
+
+In file `AppServiceProvider.php` register `AuthenticatableModel` binding.
+Value - your Auth Model:
+```php
+public function register(): void
+{
+    $this->app->bind('AuthenticatableModel', User::class);
+}
+```
 
 ## Config
 

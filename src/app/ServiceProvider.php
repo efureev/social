@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fureev\Social;
 
 use Fureev\Socialite\SocialiteManager;
@@ -20,10 +22,12 @@ class ServiceProvider extends SP
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/social.php' => config_path('social.php'),
+            __DIR__ . '/../config/social.php' => $this->app->make('path.config') . DIRECTORY_SEPARATOR . 'social.php',
         ]);
 
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'social');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'social');
 
     }
 
@@ -34,9 +38,9 @@ class ServiceProvider extends SP
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/social.php', 'social');
+        $this->mergeConfigFrom(__DIR__ . '/../config/social.php', 'social');
 
-        $this->loadRoutesFrom(__DIR__ . '/routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes.php');
 
         $this->app->singleton('social', function ($app) {
             return (new SocialiteManager($app))->buildCustomProviders(array_keys($this->app['config']['social.drivers']));
