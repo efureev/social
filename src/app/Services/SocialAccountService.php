@@ -43,8 +43,9 @@ class SocialAccountService
         /** @var \Illuminate\Database\Eloquent\Model $userModel */
         $userModel = app()->get('AuthenticatableModel');
 
-        $user = $userModel->newQuery()->where('email', $providerUser->getEmail())->first();
-
+        if (!$user = \Auth::user()) {
+            $user = $userModel->newQuery()->where('email', $providerUser->getEmail())->first();
+        }
 
         if (!$user) {
             $user = $userModel->newQuery()->create([
