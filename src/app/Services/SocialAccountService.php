@@ -8,6 +8,7 @@ use Fureev\Social\Models\SocialAccount;
 use Fureev\Socialite\Contracts\Provider;
 use Fureev\Socialite\Contracts\Provider as ProviderContract;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Auth;
 use Php\Support\Helpers\Arr;
 
 /**
@@ -43,7 +44,7 @@ class SocialAccountService
         /** @var \Illuminate\Database\Eloquent\Model $userModel */
         $userModel = app()->get('AuthenticatableModel');
 
-        if (!$user = \Auth::user()) {
+        if (!$user = Auth::user()) {
             $user = $userModel->newQuery()->where('email', $providerUser->getEmail())->first();
         }
 
@@ -71,7 +72,7 @@ class SocialAccountService
     public static function auth(Authenticatable $user)
     {
         app('session')->regenerate();
-        \Auth::guard()->login($user, true);
+        Auth::guard()->login($user, true);
 
         return redirect(config('social.redirectOnAuth', '/'));
     }
