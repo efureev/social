@@ -15,6 +15,7 @@ public function register(): void
     $this->app->bind('AuthenticatableModel', User::class);
 }
 ```
+- Run migrations: `./artisan migrate`.
 
 ## Config
 
@@ -117,4 +118,30 @@ class SocialAccountService
 
     }
 }
+```
+Auto add social providers in your view: 
+```blade
+@extends('layouts.login')
+
+@section('content')
+  <form method="POST" action="{{ route('login') }}">
+    @csrf
+    <div class="input-group">
+      <input type="text" name="email" id="email"
+             class="input-text" autocomplete="email"
+             spellcheck="false" required autofocus value="{{ old('email') }}"><i class="ig-helpers"></i>
+      <label for="email" class="input-label">E-mail</label>
+    </div>
+    <div class="input-group">
+      <input type="password" name="password" id="password" autocomplete="password"
+             class="input-text" required><i class="ig-helpers"></i>
+      <label class="input-label" for="password">Пароль</label>
+    </div>
+    <div class="buttons">
+      <button class="btn-rnd" type="submit"><i class="fas fa-sign-in-alt"></i></button>
+      <a href="{{ route('password.request') }}" title="забыли пароль?"><i class="far fa-question-circle"></i></a>
+    </div>
+    @include('social::icons', ['socials' => app('social')->getProviders()])
+  </form>
+@endsection
 ```

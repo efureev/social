@@ -6,7 +6,7 @@
 <ul id="auth-social">
     @foreach( $socials as $driver)
         <li>
-            <a href="<?= $driver->getRedirectUrl()?>"><?=$driver->label()?></a>
+            <a href="{{ $driver->getRedirectUrl() }}">{{ $driver->label() }}</a>
         </li>
     @endforeach
 </ul>
