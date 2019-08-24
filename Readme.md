@@ -66,6 +66,36 @@ return [
             'enabled' => false,
             'label'   => '<i class="fab fa-github-alt"></i>'
         ],
+        'custom_auth' => [
+            'clientId' => env('SOCIAL_AUTH_CLIENT_ID'),
+            'clientSecret' => env('SOCIAL_AUTH_CLIENT_SECRET'),
+            'url_auth' => 'http://api.auth.x/auth/authorize',
+            'url_token' => 'http://api.auth.x/auth/token',
+            'userInfoUrl' => 'http://api.auth.x/users/info',
+            'scopeSeparator' => ',',
+            'scopes' => ['name','email','photo'],
+            'tokenFieldsExtra' => [
+                'grant_type' => 'authorization_code',
+            ],
+            'mapFields' =>
+                [
+                    'id' => 'id',
+                    'name' => ['profile.first_name.v', new \Fureev\Socialite\Separator, 'profile.last_name.v'],
+                    'email' => 'profile.email.v',
+                    'avatar' => 'photo',
+                    'nickname' => 'id',
+                    'profileId' => 'profileId',
+                ],
+            'guzzle' => [
+                'query' => [
+                    'prettyPrint' => 'false',
+                ],
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer {{%TOKEN%}}',
+                ],
+            ],
+        ],
         'google' => [
             // 'enabled'      => false,
             'clientId'         => env('G+_CLIENT_ID'),
