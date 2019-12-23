@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Fureev\Social\Services;
 
 use Fureev\Social\Models\SocialAccount;
-use Fureev\Socialite\Contracts\Provider;
 use Fureev\Socialite\Contracts\Provider as ProviderContract;
+use Fureev\Socialite\Contracts\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Php\Support\Helpers\Arr;
@@ -30,6 +30,12 @@ class SocialAccountService
      * @var string
      */
     public static $userKeyType = 'uuid';
+
+    /**
+     * User function for mapping social User data to User model
+     * @var array|callable
+     */
+    public static $socialToUserMapFn = [SocialAccountService::class, 'socialToUserMapDefault'];
 
     /**
      * @param ProviderContract $provider
@@ -68,20 +74,30 @@ class SocialAccountService
         }
 
         if (!$user) {
-            $user = $userModel->newQuery()->create([
-                'email' => $providerUser->getEmail(),
-                'display_name' => $providerUser->getName(),
-                'login' => $providerUser->getNickname(),
-            ]);
+            $map = call_user_func(static::$socialToUserMapFn, $providerUser);
+            $user = $userModel->newQuery()->create($map);
         }
 
         $account->user()->associate($user);
         $account->save();
 
         return $user;
-
-
     }
+
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    public static function socialToUserMapDefault(User $user): array
+    {
+        return [
+            'email' => $user->getEmail(),
+            'name' => $user->getName(),
+            'login' => $user->getNickname(),
+        ];
+    }
+
 
     /**
      * @param Authenticatable $user
