@@ -10,6 +10,27 @@ Wrapper on Laravel Socialite
 - Run migrations: `./artisan migrate`.
 - If need - make published config: `./artisan vendor:publish --tag=social`.
 
+## Basic usage
+
+- add config file `social.php` into `config` dir with your social drivers:
+```php
+<?php
+return [
+    'drivers' => [
+        'vk' => [
+            'clientId' => env('VK_CLIENT_ID'),
+            'clientSecret' => env('VK_CLIENT_SECRET'),
+        ],
+    ],
+];
+```
+- add into your app `.env` file variables: `VK_CLIENT_ID=...` and `VK_CLIENT_SECRET=...` with VK credentials. See in `https://vk.com/apps?act=manage`
+- run migration: `php artisan migration`
+- add into view (ex:`resources/views/auth/login.blade.php`): `@include('social::list', ['socials' => app('social')->getProviders()])`
+- Done! 
+
+For customizing perform - see config and docs.
+
 ## Config
 
 ### Config Props 
