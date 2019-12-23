@@ -11,11 +11,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Class SocialAccount
  *
  * @package App\Models
- * @property int    $id
- * @property int    $user_id
+ * @property int $id
+ * @property int $user_id
  * @property string $provider_user_id
  * @property string $provider
- * @property array  $raw
+ * @property array $raw
  * @method static SocialAccount|\Illuminate\Database\Eloquent\Builder whereProvider(string $provider)
  * @method SocialAccount|\Illuminate\Database\Eloquent\Builder whereProviderUserId (string $userId)
  * @mixin \Illuminate\Database\Eloquent\Builder
@@ -30,7 +30,7 @@ class SocialAccount extends Model
         'user_id',
         'provider_user_id',
         'provider',
-        'raw'
+        'raw',
     ];
 
     protected $casts = [
@@ -42,6 +42,6 @@ class SocialAccount extends Model
      */
     public function user()
     {
-        return $this->belongsTo(app()->get('AuthenticatableModel'));
+        return $this->belongsTo(config('social.userClass', 'App/User'));
     }
 }

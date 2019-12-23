@@ -19,5 +19,7 @@ composer.lock
 
 .env
 .phpunit.result.cache
+phpunit.xml.dist
+clover.xml
 
 .DS_Store

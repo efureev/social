@@ -7,15 +7,8 @@ Wrapper on Laravel Socialite
 
 ## Install
 - `composer require efureev/social`
-- In file `AppServiceProvider.php` register `AuthenticatableModel` binding.
-Value - your Auth Model:
-```php
-public function register(): void
-{
-    $this->app->bind('AuthenticatableModel', User::class);
-}
-```
 - Run migrations: `./artisan migrate`.
+- If need - make published config: `./artisan vendor:publish --tag=social`.
 
 ## Config
 
@@ -23,6 +16,7 @@ public function register(): void
 - `redirectOnAuth` [string] redirect on address after user auth.
 - `onSuccess` [\Closure|array] action on auth success. Params: \Fureev\Socialite\Two\AbstractProvider
 - `drivers` [array] Driver list (`driverName => driverConfig`)
+- `userClass` [string] Auth User Class (`userClass => 'App/Models/User'`)
 
 ### Driver Config
 - `clientId` [string] Require
@@ -172,6 +166,8 @@ Auto add social providers in your view:
       <a href="{{ route('password.request') }}" title="забыли пароль?"><i class="far fa-question-circle"></i></a>
     </div>
     @include('social::icons', ['socials' => app('social')->getProviders()])
+    // or 
+    @include('social::list', ['socials' => app('social')->getProviders()])
   </form>
 @endsection
 ```

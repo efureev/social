@@ -18,6 +18,25 @@ use Php\Support\Helpers\Arr;
  */
 class SocialAccountService
 {
+
+    /**
+     * Indicates if SocialAccountService migrations will be run.
+     * @var bool
+     */
+    public static $runsMigrations = true;
+
+    /**
+     * User key type in migration
+     * @var string
+     */
+    public static $userKeyType = 'uuid';
+
+    /**
+     * @param ProviderContract $provider
+     *
+     * @return Authenticatable|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|mixed|object|null
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public static function setOrGetUser(ProviderContract $provider)
     {
         $providerUser = $provider->user();
@@ -37,8 +56,8 @@ class SocialAccountService
 
         $account = new SocialAccount([
             'provider_user_id' => $providerUser->getId(),
-            'provider'         => $providerName,
-            'raw'              => $providerUser->getRaw()
+            'provider' => $providerName,
+            'raw' => $providerUser->getRaw(),
         ]);
 
         /** @var \Illuminate\Database\Eloquent\Model $userModel */
@@ -50,9 +69,9 @@ class SocialAccountService
 
         if (!$user) {
             $user = $userModel->newQuery()->create([
-                'email'        => $providerUser->getEmail(),
+                'email' => $providerUser->getEmail(),
                 'display_name' => $providerUser->getName(),
-                'login'        => $providerUser->getNickname(),
+                'login' => $providerUser->getNickname(),
             ]);
         }
 
@@ -65,9 +84,10 @@ class SocialAccountService
     }
 
     /**
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param Authenticatable $user
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public static function auth(Authenticatable $user)
     {
