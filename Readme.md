@@ -11,8 +11,8 @@ Wrapper on Laravel Socialite
 - If need - make published config: `./artisan vendor:publish --tag=social`.
 
 ## Basic usage
-
-- add config file `social.php` into `config` dir with your social drivers:
+- Published resources: `php artisan vendor:publish --tag=social`
+- Fill config file `social.php` into `config` dir with your social drivers:
 ```php
 <?php
 return [
@@ -21,12 +21,18 @@ return [
             'clientId' => env('VK_CLIENT_ID'),
             'clientSecret' => env('VK_CLIENT_SECRET'),
         ],
+        'github' => [
+            // ...
+        ],
+        // ...
     ],
 ];
 ```
 - add into your app `.env` file variables: `VK_CLIENT_ID=...` and `VK_CLIENT_SECRET=...` with VK credentials. See in `https://vk.com/apps?act=manage`
 - run migration: `php artisan migration`
-- add into view (ex:`resources/views/auth/login.blade.php`): `@include('social::list', ['socials' => app('social')->getProviders()])`
+- add into view (ex:`resources/views/auth/login.blade.php`):
+  - for list: `@include('social::list', ['socials' => app('social')->getProviders()])`
+  - for icons: `@include('social::icons', ['socials' => app('social')->getProviders()])`
 - Done! 
 
 For customizing perform - see config and docs.
