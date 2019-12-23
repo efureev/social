@@ -19,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Fureev\\Social\\": "src/app"
+      "Fureev\\Social\\": "src/"
     }
   },
   "autoload-dev": {
