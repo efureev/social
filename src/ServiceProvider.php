@@ -26,6 +26,14 @@ class ServiceProvider extends SP
 
         if ($this->app->runningInConsole()) {
             $this->registerMigrations();
+
+            $this->publishes([
+                static::getPath('resources/views') => base_path('resources/views/vendor/social'),
+            ], 'social');
+
+            $this->publishes([
+                static::getPath('resources/assets') => public_path('vendor/social'),
+            ], 'social');
         }
     }
 

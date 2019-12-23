@@ -1,0 +1,17 @@
+
+ul.auth-social {
+  list-style: none;
+}
+
+ul.auth-social li.icons {
+  display: inline;
+}
+
+.social-icon {
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  width: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+}
