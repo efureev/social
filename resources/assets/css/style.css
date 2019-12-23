@@ -3,7 +3,7 @@ ul.auth-social {
   list-style: none;
 }
 
-ul.auth-social li.icons {
+ul.auth-social.icons li {
   display: inline;
 }
 
