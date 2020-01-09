@@ -81,7 +81,8 @@ class SocialAccountService
         ]);
 
         /** @var \Illuminate\Database\Eloquent\Model $userModel */
-        $userModel = config('social.userClass', 'App/User');
+        $userModelClass = config('social.userClass', 'App/User');
+        $userModel = new $userModelClass;
 
         if (!$user = Auth::user()) {
             $user = $userModel->newQuery()->where('email', $providerUser->getEmail())->first();
