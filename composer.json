@@ -7,7 +7,7 @@
     }
   ],
   "require": {
-    "efureev/socialite": "^1.0",
+    "efureev/socialite": "^1.1",
     "efureev/support": "^2.3",
     "illuminate/routing": "^5.8|^6.2|^7.0",
     "illuminate/database": "^5.8|^6.2|^7.0"
