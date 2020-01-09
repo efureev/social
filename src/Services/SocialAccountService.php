@@ -49,6 +49,20 @@ class SocialAccountService
 
         $providerName = $provider->getName();
 
+        return static::syncUser($providerName, $providerUser);
+    }
+
+    /**
+     * Synchronizing social-user with app`s user
+     *
+     * @param string $providerName
+     * @param User $providerUser
+     *
+     * @return Authenticatable|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|mixed|object|null
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public static function syncUser(string $providerName, User $providerUser)
+    {
         $account = SocialAccount::whereProvider($providerName)
             ->whereProviderUserId($providerUser->getId())
             ->first();
@@ -67,7 +81,7 @@ class SocialAccountService
         ]);
 
         /** @var \Illuminate\Database\Eloquent\Model $userModel */
-        $userModel = app()->get('AuthenticatableModel');
+        $userModel = config('social.userClass', 'App/User');
 
         if (!$user = Auth::user()) {
             $user = $userModel->newQuery()->where('email', $providerUser->getEmail())->first();
