@@ -40,10 +40,10 @@ class SocialAccountService
     /**
      * @param ProviderContract $provider
      *
-     * @return Authenticatable|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|mixed|object|null
+     * @return SocialAccount
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public static function setOrGetUser(ProviderContract $provider)
+    public static function setOrGetUser(ProviderContract $provider): SocialAccount
     {
         $providerUser = $provider->user();
 
@@ -58,10 +58,10 @@ class SocialAccountService
      * @param string $providerName
      * @param User $providerUser
      *
-     * @return Authenticatable|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|mixed|object|null
+     * @return SocialAccount
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public static function syncUser(string $providerName, User $providerUser)
+    public static function syncUser(string $providerName, User $providerUser): SocialAccount
     {
         $account = SocialAccount::whereProvider($providerName)
             ->whereProviderUserId($providerUser->getId())
@@ -71,14 +71,16 @@ class SocialAccountService
             $account->raw = Arr::merge($account->raw, $providerUser->getRaw());
             $account->save();
 
-            return $account->user;
+            return $account;
         }
 
-        $account = new SocialAccount([
-            'provider_user_id' => $providerUser->getId(),
-            'provider' => $providerName,
-            'raw' => $providerUser->getRaw(),
-        ]);
+        $account = new SocialAccount(
+            [
+                'provider_user_id' => $providerUser->getId(),
+                'provider' => $providerName,
+                'raw' => $providerUser->getRaw(),
+            ]
+        );
 
         /** @var \Illuminate\Database\Eloquent\Model $userModel */
         $userModelClass = config('social.userClass', 'App/User');
@@ -96,7 +98,7 @@ class SocialAccountService
         $account->user()->associate($user);
         $account->save();
 
-        return $user;
+        return $account;
     }
 
     /**
